@@ -28,8 +28,8 @@ SECRET_KEY = '5j7-jpwi2x_j+4^+j7eq*0kqr7$n)bbdhk7pu-ss0!!ozmh_ld'
 #网站处于开发模式,开发完成后  一定要改成false
 DEBUG = True
 #网站访问白名单 ip地址  [‘*’]  通配符 允许任何网站访问
-ALLOWED_HOSTS = ['10.4.4.190','10.4.13.213','127.0.0.1']
-#ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['10.4.4.190','10.4.13.213','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 #应用注册
@@ -58,7 +58,8 @@ ROOT_URLCONF = 'Django-demo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        #获取app中templates模板html文件地址
+        'DIRS': [os.path.join(BASE_DIR, "app.templates"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
