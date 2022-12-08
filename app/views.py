@@ -58,4 +58,5 @@ def news(request):
     # "post_time":"2022-11-20","news_summary":"","news_thumbnail":null,
     # "news_link":"/ddjs/202211/1669074816121074619.html","creater":null,"hits":0}]
 
-    return render(request,'nres.html')
+    return render(request,'news.html')
+
