@@ -6,6 +6,10 @@ class User(models.Model):
         ('男', '男'),
         ('女', '女')
     )
+
+
+
+
     name = models.CharField(max_length=30, unique=True, verbose_name='姓 名')
     birthday = models.DateField(blank=True, null=True, verbose_name='生 日')
     gender = models.CharField(max_length=30, choices=GENDER_CHOICES, verbose_name='性 别')
@@ -14,3 +18,11 @@ class User(models.Model):
 
 
 # HostAdmin
+
+
+
+
+
+
+
+

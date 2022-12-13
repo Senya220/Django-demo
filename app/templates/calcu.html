@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Example</title>
+</head>
+<body>
+    add: {{ count|add:10 }}
+    <br>
+    time: {{ time|date:"Y-m-d H:i:s" }}
+    <br>
+    cut: {{ cut_str|cut:"-" }}
+    <br>
+    catfirst: {{ firstpig|capfirst }}
+    <br>
+    default: {{ result|default:"empty"}}
+    <br>
+    default_is_none: {{ if_none|default_if_none:"none" }}
+    <br>
+    dicsort: {{ dict|dictsort:"age" }}
+    <br>
+    dictsortreversed: {{ dict|dictsortreversed:"age" }}
+    <br>
+    Dict First: {{ dict|first}}
+    <br>
+    Dict Last: {{ dict|last}}
+    <br>
+    Dict length: {{ dict|length}}
+    <br>
+    Float format: {{ floatNUm|floatformat:2}}
+    <br>
+    join: {{ join|join:"-" }}
+    <br>
+    divisibleby: {{ count|divisibleby:2 }}
+    <br>
+    length_is: {{ dict|length_is:2 }}
+    <br>
+    value random: {{ dict|random }}
+    <br>
+    slice: {{ cut_str|slice:2 }}
+    <br>
+    slugify: {{ VVV|slugify}}
+    <br>
+    upper: {{ VVV|upper}}
+    <br>
+    urlize: {{ link|urlize}}
+    <br>
+    wordcount: {{ link|wordcount}}
+    <br>
+    safe: {{ html_str|safe }}
+    <br>
+    random: {{ join|random }}
+    <br>
+    timeuntil: {{ future|timeuntil }}
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Example</title>
+</head>
+<body>
+
+<h1> {{ name }} </h1>
+{% for item in list_data %}
+    <li> {{ item }} --forloop counter:{{ forloop.counter }} --forloop.counter0:{{ forloop.counter0 }} --forloop.revcounter:{{ forloop.revcounter }}
+        --forloop.revcounter0:{{ forloop.revcounter0 }}</li>
+    {% if forloop.first %}
+        <li> this is the first item </li>
+    {% elif forloop.last %}
+        <li> this is the last item </li>
+    {% endif %}
+    {% empty %}
+        current page has no item(list_data=[])
+{% endfor %}
+    <img src="{% static 'images/1.png' %}">
+</body>
+</html>

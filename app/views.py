@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+#common view
+from django.views.generic import View
 import requests
+import datetime
 
 # Create your views here.
 
@@ -59,4 +62,69 @@ def news(request):
     # "news_link":"/ddjs/202211/1669074816121074619.html","creater":null,"hits":0}]
 
     return render(request,'news.html')
+
+class Messgae(View):
+    def get(self,request,name,age):
+        print(dir(request))
+        # name = request.GET.get('name','')
+        # age = request.GET.get('age',10)
+        #http://127.0.0.1:8000/message/    my name is age is 10
+        #http://127.0.0.1:8000/message/?name=Selina&&age=18  my name is Selina age is 18
+        #return HttpResponse("my name is {}  age is {}".format(name,age))    path('message/', Messgae.as_view()),
+
+        #param from get(self,request,name,age)
+        #http: // 127.0.0.1: 8000 / message / selina / 18
+        return HttpResponse("my name is {}  age is {}".format(name,age))
+
+
+class Index(View):
+    def get(self,request):
+        return render(request,'showInfo.html',{'name':'Selina','age':22})
+
+class Para(View):
+    def get(self,request,name):
+        list_data = range(10)
+        return render(request,'pata.html',{'name':name,'list_data':list_data})
+
+
+class Calcu(View):
+    def get(self,request):
+        data = {}
+        data['count'] = 20
+        data['time'] = datetime.datetime.now()
+        data['cut_str'] = 'hello-today'
+        data['firstpig'] = 'hello-django'
+        data['result'] = False
+        data['if_none'] = None
+        #data['if_none'] = ''  ->empty string ->print in html still a empty string not none!!!!!
+        data['dict'] = [{'name':'Selina','age':22},{'name':'Ethan','age':35},{'name':'Jamie','age':5}]
+        data['floatNUm'] = 3.2345
+        data['join'] = range(10)
+        data['VVV'] = "Kong erv"
+        data['link'] = "this is www.baidu.com"
+        data['html_str'] = '<div style="background-color:red;width:50px;height:50px"> </div>'
+        data['future'] = data['time'] + datetime.timedelta(days=5)
+        return render(request,'calcu.html',data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
