@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 #应用注册
 INSTALLED_APPS = [
+    #定要注释该应用及其url路由，否则会报错： (admin.E403)（红色） A’django.template.backends.django.DjangoTemplates’ instance must be configured in TEMPLATES in order to use the admin application
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,9 +58,26 @@ ROOT_URLCONF = 'Django-demo.urls'
 #配置html静态文件
 TEMPLATES = [
     {
+        # jinja2 template config
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        # 获取app jinja2中templates模板html文件地址
+        'DIRS': [os.path.join(BASE_DIR, "jinja_templates")],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'environment': 'app.base_jinja2.environment'
+        },
+    },
+    {
+        #django default template
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        #获取app中templates模板html文件地址
-        'DIRS': [os.path.join(BASE_DIR, "app.templates"),],
+        #if templates folder inside app,then replace "templates" with "app.templates"
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

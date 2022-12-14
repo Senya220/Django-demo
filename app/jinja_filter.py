@@ -1,29 +1,21 @@
-from django import template
 from app.consts import SensitiveWord
-
 import jieba
 
-#custom define filters
-register = template.Library()
+# def jinja_test(value,args):
+def jinja_test(value):
+    return value * "jinjia-"
 
-@register.filter
-def test_filter(value,args):
-    return value * args
-
-
-@register.filter
 def simple_check(value):
     #get input message and split to word list
     message = jieba.lcut(value)
     #check sensitive word include in list
-    check = list(set(message)) & set(SensitiveWord)
+    check = list(set(message) & set(SensitiveWord))
     print("input message:".format(message))
     if check:
         return "message inclue sensitive word"
     return value
 
 
-@register.filter(name='deep_check_message')
 def deep_check(value):
     #get input message and split to word list
     message = jieba.lcut(value)
@@ -36,26 +28,3 @@ def deep_check(value):
     if new_message:
         value = ''.join(new_message)
     return value
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

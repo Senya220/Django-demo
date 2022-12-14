@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Example</title>
+</head>
+<body>
+    Hello jinja2
+    <br>
+    {% if error %}
+    <h3>error: {{ error }} </h3>
+    {% else %}
+    <span style="color: {{ message_type.color }}"> {{ message|simple_check }} </span>
+    <span style="color: {{ message_type.color }}"> {{ message|deep_check }} </span>
+    {% endif %}
+    <br>
+    {{ message_type }}
+
+</body>
+</html>

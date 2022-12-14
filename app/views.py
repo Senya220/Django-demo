@@ -108,11 +108,29 @@ class Calcu(View):
 
 
 
+class Jinja(View):
+    def get(self,request):
+        data = {'name':'selina','age':5}
+        return render(request,'jin.html',data)
 
 
+class MessageType(View):
+    def get(self,request,message_type):
+        data = {}
+        try:
+            message_type_obj = message_type
+        except:
+            data['error'] = 'no this type'
+            return render(request, 'enumMsg.html', data)
 
+        message = request.GET.get('message','')
+        if not message:
+            data['error'] = "can't be none"
+            return render(request,'enumMsg.html',data)
 
-
+        data['message'] = message
+        data['message_type'] = message_type_obj
+        return render(request, 'enumMsg.html', data)
 
 
 

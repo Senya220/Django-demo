@@ -2,8 +2,7 @@ from django.urls import path
 from django.contrib import admin
 from app import views
 #class Message
-from .views import Messgae,Index,Para,Calcu
-# from .views import index
+from .views import Messgae,Index,Para,Calcu,Jinja,MessageType
 
 urlpatterns = {
     # #http:localhost:8000
@@ -28,5 +27,8 @@ urlpatterns = {
     #http://127.0.0.1:8000/para  para is the name of param of get function in Para(View) ->list
     path('<str:name>', Para.as_view(), name='para'),
     path('calcu/', Calcu.as_view()),
+    path('jinja/',Jinja.as_view()),
+    #http://127.0.0.1:8000/message/info?message_type=info
+    path('message/<str:message_type>', MessageType.as_view()),
 
 }
