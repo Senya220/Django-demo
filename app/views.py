@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from app.consts import MessageType
 #common view
 from django.views.generic import View
 import requests
 import datetime
+
+from app.models import userIn
+
 
 # Create your views here.
 
@@ -12,7 +16,6 @@ def index(request,name,age):
     age = request.GET.get('age',10)
     print(name,age)
     return HttpResponse('hello django')
-
 def get(request):
     context = {}
     # 通过request.GET['name']形式获取get表单内容
@@ -20,12 +23,10 @@ def get(request):
     context['result'] = f"你搜索的内容为：{request.GET['q']}"
     return render(request, 'result.html', context)
 
-
 def post_html(request):
     # 不能和get一样使用render_to_response必须使用render进行重定向，不然服务端不会设置csrf_token
     # return render_to_response('post.html')
     return render(request, 'post.html')
-
 
 def post(request):
     context = {}
@@ -75,8 +76,6 @@ class Messgae(View):
         #param from get(self,request,name,age)
         #http: // 127.0.0.1: 8000 / message / selina / 18
         return HttpResponse("my name is {}  age is {}".format(name,age))
-
-
 class Index(View):
     def get(self,request):
         return render(request,'showInfo.html',{'name':'Selina','age':22})
@@ -85,8 +84,6 @@ class Para(View):
     def get(self,request,name):
         list_data = range(10)
         return render(request,'pata.html',{'name':name,'list_data':list_data})
-
-
 class Calcu(View):
     def get(self,request):
         data = {}
@@ -105,20 +102,16 @@ class Calcu(View):
         data['html_str'] = '<div style="background-color:red;width:50px;height:50px"> </div>'
         data['future'] = data['time'] + datetime.timedelta(days=5)
         return render(request,'calcu.html',data)
-
-
-
 class Jinja(View):
     def get(self,request):
         data = {'name':'selina','age':5}
         return render(request,'jin.html',data)
-
-
-class MessageType(View):
+class MessageTest(View):
     def get(self,request,message_type):
         data = {}
+        message_type = str(message_type)
         try:
-            message_type_obj = message_type
+            message_type_obj = MessageType[message_type]
         except:
             data['error'] = 'no this type'
             return render(request, 'enumMsg.html', data)
@@ -131,6 +124,58 @@ class MessageType(View):
         data['message'] = message
         data['message_type'] = message_type_obj
         return render(request, 'enumMsg.html', data)
+
+#DB
+#insert info to userIn table
+class UserInfo(View):
+    def get(self,request):
+        #insert info to table userIn
+        #first
+        # userIn.objects.create(name='lucy',age=18)
+
+        userIn.objects.create(name='wang',age=36)
+        # #second
+        # user = userIn(name='mark',age=23)
+        # user.save()
+        # #third
+        # user = userIn()
+        # user.name = 'hank'
+        # user.age = 28
+        # user.save()
+
+        # #Query one
+        # user = userIn.objects.get(id=1)
+        # return render(request,'userinfo.html',{'name':user.name,'age':user.age})
+
+        # #query all
+        # user = userIn.objects.all()
+        # return render(request,'userinfo.html')
+        # #need write __str__ method in models.py-->UserIn
+        # # print data are QuerySet type
+        # print(user)
+
+        #get or create
+        user = userIn.objects.get_or_create(name='marrk')
+        #
+        print(user)
+        user = userIn.objects.all()
+        print(user)
+
+        #update
+        user = userIn.objects.filter(id=1).update(name='Senya',age=29)
+
+        # #delete
+        # user = userIn.objects.get(id=2)
+        # user.delete()
+        # user = userIn.objects.get(id=1)
+        # user.delete()
+        # user = userIn.objects.get(id=3)
+        # user.delete()
+        user = userIn.objects.all()
+        user.delete()
+
+        return render(request,'userinfo.html')
+
 
 
 

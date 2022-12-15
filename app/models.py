@@ -7,18 +7,56 @@ class User(models.Model):
         ('女', '女')
     )
 
-
-
-
     name = models.CharField(max_length=30, unique=True, verbose_name='姓 名')
     birthday = models.DateField(blank=True, null=True, verbose_name='生 日')
     gender = models.CharField(max_length=30, choices=GENDER_CHOICES, verbose_name='性 别')
     account = models.IntegerField(default=0, verbose_name='工 号')
     age = models.IntegerField(default=18, verbose_name='年 龄')
 
+class Userinfo(models.Model):
+    id = models.IntegerField(primary_key=True)
+    username = models.CharField(unique=True,max_length=20,blank=False)
+    age = models.SmallIntegerField(default=0)
+    phone = models.SmallIntegerField(db_index=True,blank=True,default=0)
+    email = models.EmailField(blank=True,default='')
+    info = models.TextField()
 
-# HostAdmin
+    #add time when create
+    create_time = models.DateTimeField(auto_now_add=True)
+    #update time when update info
+    update_time = models.DateTimeField(auto_now=True)
 
+    #union index
+    class Meta:
+        index_together = ['username','phone']
+
+class Userprofile(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user = models.OneToOneField(User,blank=True,null=True,on_delete=models.SET_NULL)
+    birthday = models.CharField(max_length=50,blank=True,default='')
+
+#1:n
+class Userlog(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(User,related_name='user_log',on_delete=models.SET_NULL,blank=True,null=True)
+    content = models.TextField()
+    create_time = models.DateTimeField()
+
+
+#n:n
+class Group(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user = models.ManyToManyField(User,related_name='group')
+    name = models.CharField(max_length=20)
+    create_time = models.IntegerField(default=0)
+
+
+class userIn(models.Model):
+    name = models.CharField(max_length=20)
+    age = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
 
 
 

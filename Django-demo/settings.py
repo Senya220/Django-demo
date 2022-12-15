@@ -97,9 +97,17 @@ WSGI_APPLICATION = 'Django-demo.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 #配置数据库
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test',# db name, you have to create before use
+        'USER': 'root',
+        'PASSWORD': 'password',
+        'HOST': '', #default 127.0.0.1
+        'PORT': '3306',
     }
 }
 

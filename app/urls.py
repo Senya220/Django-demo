@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib import admin
 from app import views
 #class Message
-from .views import Messgae,Index,Para,Calcu,Jinja,MessageType
+from .views import Messgae,Index,Para,Calcu,Jinja,MessageTest,UserInfo
 
 urlpatterns = {
     # #http:localhost:8000
@@ -29,6 +29,7 @@ urlpatterns = {
     path('calcu/', Calcu.as_view()),
     path('jinja/',Jinja.as_view()),
     #http://127.0.0.1:8000/message/info?message_type=info
-    path('message/<str:message_type>', MessageType.as_view()),
+    path('message/<str:message_type>', MessageTest.as_view()),
+    path('userinfo/',UserInfo.as_view())
 
 }
