@@ -101,13 +101,37 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
+    #mysql
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'test',# db name, you have to create before use
+    #     'USER': 'root',
+    #     'PASSWORD': 'password',
+    #     'HOST': '', #default 127.0.0.1
+    #     'PORT': '3306',
+    # }
+
+    #redis
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test',# db name, you have to create before use
+        'NAME': 'lab-redis',  # db name, you have to create before use
         'USER': 'root',
         'PASSWORD': 'password',
-        'HOST': '', #default 127.0.0.1
+        'HOST': '',  # default 127.0.0.1
         'PORT': '3306',
+    }
+}
+
+#redis config
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 200},
+            "PASSWORD": "",
+        }
     }
 }
 

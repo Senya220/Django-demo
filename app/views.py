@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from app.consts import MessageType
+from .forms import Auth
 #common view
 from django.views.generic import View
 import requests
@@ -176,9 +177,29 @@ class UserInfo(View):
 
         return render(request,'userinfo.html')
 
+# class Regiser(View):
+#     def get(self,request):
+#         return render(request,'regist.html',{'form':form})
+#
+#     def post(self,request):
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         return HttpResponse('username:{},password:{}'.format(username,password))
 
 
+class Regiser(View):
+    def get(self,request):
+        form = Auth()
+        return render(request,'regist.html',{'form':form})
 
+    def post(self,request):
+        form = Auth(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username','') #if get null,return ''
+            password = form.cleaned_data.get('password','')
+            return HttpResponse('username:{},password:{}'.format(username,password))
+        else:
+            return render(request,'regist.html',{'form':form})
 
 
 

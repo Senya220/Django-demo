@@ -1,4 +1,23 @@
 from django.db import models
+import json
+from functools import wraps
+from django_redis import get_redis_connection
+
+#cache
+_cache = get_redis_connection('default')
+def cache(func):
+    @wraps(func)
+    def wrapper(obj,*args):
+        key = args[0]
+        value = _cache.get(key)
+        if value:
+            #convert to dict
+            return json.loads(value)
+        rs = func(obj,*args)
+        _cache.set(key,json.dumps(rs))
+        return rs
+    return wrapper
+
 
 # Create your models here.
 class User(models.Model):
@@ -57,6 +76,51 @@ class userIn(models.Model):
 
     def __str__(self):
         return self.name
+
+
+    @classmethod
+    @cache
+    def get(cls, id):
+        rs = cls.objects.get(id=id)
+        return {
+            # 'id': rs.id,
+            'name': rs.name,
+            'age': rs.age,
+            # 'info': rs.info,
+            # 'create_time': str(rs.create_time),
+            # 'update_time': str(rs.update_time)
+        }
+
+
+
+class Auth(models.Model):
+    username = models.CharField(max_length=18,verbose_name='用户名')
+    username = models.CharField(max_length=18,verbose_name='密码')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
