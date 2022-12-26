@@ -31,6 +31,7 @@ class User(models.Model):
     gender = models.CharField(max_length=30, choices=GENDER_CHOICES, verbose_name='性 别')
     account = models.IntegerField(default=0, verbose_name='工 号')
     age = models.IntegerField(default=18, verbose_name='年 龄')
+    info = models.CharField(default='dd',max_length=30,verbose_name='info')
 
 class Userinfo(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -86,16 +87,16 @@ class userIn(models.Model):
             # 'id': rs.id,
             'name': rs.name,
             'age': rs.age,
-            # 'info': rs.info,
-            # 'create_time': str(rs.create_time),
-            # 'update_time': str(rs.update_time)
+            'info': rs.info,
+            'create_time': str(rs.create_time),
+            'update_time': str(rs.update_time)
         }
 
 
 
 class Auth(models.Model):
     username = models.CharField(max_length=18,verbose_name='用户名')
-    username = models.CharField(max_length=18,verbose_name='密码')
+    password = models.CharField(max_length=18,verbose_name='密码')
 
 
 

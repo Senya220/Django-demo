@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<form action="{% url 'register' %}" method="post">
+    <input type="text" name='username' placeholder="username" > <br>
+    <input type="password" name='password' placeholder="password" > <br>
+    <input type="password" name='check_password' placeholder="check_password"> <br>
+    <input type="submit" value="register"> <br>
+    <a href="{% url 'login' %}"> account exist? login directly</a>
+</form>
+
+</body>
+</html>

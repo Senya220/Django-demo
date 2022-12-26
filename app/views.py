@@ -1,13 +1,20 @@
-from django.shortcuts import render
+#tiaozhuan dao zhiding page
+from django.shortcuts import render,reverse,redirect
 from django.http import HttpResponse
 from app.consts import MessageType
 from .forms import Auth
 #common view
 from django.views.generic import View
+from app.models import userIn
+#table user under auth.models
+from django.contrib.auth.models import User
+#function login, logout and authenticate that django has completed
+from django.contrib.auth import login,logout,authenticate
+
+
 import requests
 import datetime
 
-from app.models import userIn
 
 
 # Create your views here.
@@ -77,9 +84,9 @@ class Messgae(View):
         #param from get(self,request,name,age)
         #http: // 127.0.0.1: 8000 / message / selina / 18
         return HttpResponse("my name is {}  age is {}".format(name,age))
-class Index(View):
-    def get(self,request):
-        return render(request,'showInfo.html',{'name':'Selina','age':22})
+# class Index(View):
+#     def get(self,request):
+#         return render(request,'showInfo.html',{'name':'Selina','age':22})
 
 class Para(View):
     def get(self,request,name):
@@ -202,6 +209,71 @@ class Regiser(View):
             return render(request,'regist.html',{'form':form})
 
 
+
+class Register(View):
+    def get(self,request):
+        #if user has login -> return to index page
+        if authenticate(request.user):
+            return redirect(reverse('index'))
+        #else return to register.html
+        return render(request,'register.html')
+
+
+    def post(self,request):
+        username = request.POST.get('username','')
+        password = request.POST.get('password','')
+        check_password = request.POST.get('check_password','')
+        #check password is the same?
+        if password != check_password:
+            return HttpResponse("password != check_password")
+
+        #check if account is exist? if exist,login ;else register
+        exists = User.objects.filter(username=username).exists()
+        if exists:
+            return HttpResponse("user already exist")
+        User.objects.create_user(username=username,password=password)
+        #register success,then turn to login page
+        return redirect(reverse('login'))
+
+
+class Login(View):
+    def get(self,request):
+        return render(request,'index.html')
+
+    def post(self,request):
+        username = request.POST.get('username','')
+        password = request.POST.get('password','')
+        exists = User.objects.filter(username=username)
+        if not exists:
+            # username not exist,return to register.html
+            # return redirect(reverse('register.html'))
+            return HttpResponse("username is not exist,please regist first!")
+        #username is exist,need to verify username and password are match
+        user = authenticate(username=username,password=password)
+        if user:
+            login(request,user)
+            return redirect(reverse('index'))
+        else:
+            return HttpResponse("password is incorrect")
+
+
+
+
+class Index(View):
+    def get(self,request):
+        return render(request,'index.html')
+
+    def post(self,request):
+        pass
+
+
+class Logout(View):
+    def get(self,request):
+        logout(request)
+        return redirect(reverse('login'))
+
+    def post(self,request):
+        pass
 
 
 
