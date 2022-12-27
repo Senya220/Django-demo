@@ -238,7 +238,7 @@ class Register(View):
 
 class Login(View):
     def get(self,request):
-        return render(request,'index.html')
+        return render(request,'login.html')
 
     def post(self,request):
         username = request.POST.get('username','')
@@ -252,6 +252,7 @@ class Login(View):
         user = authenticate(username=username,password=password)
         if user:
             login(request,user)
+            # return render(request,'index.html')
             return redirect(reverse('index'))
         else:
             return HttpResponse("password is incorrect")
@@ -261,7 +262,8 @@ class Login(View):
 
 class Index(View):
     def get(self,request):
-        return render(request,'index.html')
+        # return render(request,'index.html')
+        return redirect(reverse('index'))
 
     def post(self,request):
         pass
@@ -270,7 +272,8 @@ class Index(View):
 class Logout(View):
     def get(self,request):
         logout(request)
-        return redirect(reverse('login'))
+        # return render(request,'register.html')
+        return redirect(reverse('register'))
 
     def post(self,request):
         pass
