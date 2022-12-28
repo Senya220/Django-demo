@@ -1,16 +1,18 @@
 #tiaozhuan dao zhiding page
+from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render,reverse,redirect
 from django.http import HttpResponse
 from app.consts import MessageType
 from .forms import Auth
 #common view
 from django.views.generic import View
-from app.models import userIn
+from app.models import userIn,Apage
 #table user under auth.models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Permission,Group
 #function login, logout and authenticate that django has completed
 from django.contrib.auth import login,logout,authenticate
-
+#search permission
+from django.db.models import Q
 
 import requests
 import datetime
@@ -253,7 +255,7 @@ class Login(View):
         if user:
             login(request,user)
             # return render(request,'index.html')
-            return redirect(reverse('index'))
+            return render(request,'index.html')
         else:
             return HttpResponse("password is incorrect")
 
@@ -273,10 +275,104 @@ class Logout(View):
     def get(self,request):
         logout(request)
         # return render(request,'register.html')
-        return redirect(reverse('register'))
+        #logout ->redirect to login html
+        # return redirect(reverse('login.html'))
+        return HttpResponse('logout success!')
 
     def post(self,request):
         pass
+
+
+#基于类的验证，直接针对单个用户
+
+class A(View):
+
+    def get(self, request):
+        #verify login or not?
+        if authenticate(request.user):
+            return render(request, 'place_login.html')
+        else:
+            # #content_type反应了permission属于哪个model
+            # content_type = ContentType.objects.get_for_model(Apage)
+            # # 首先你需要添加"权限管理"这项权限,codename就是权限标识
+            # a_permission = Permission.objects.create(
+            #     codename='look_a_page',
+            #     name='Can access a page',
+            #     content_type=content_type,
+            # )
+            # #add permission for user
+            a_permission = Permission.objects.get(codename='')
+            # request.user.user_permission.add(a_permission)
+            if not request.user.has_perm('app.look_a_page'):
+                return render(request, 'a.html', {'error': 'current user have no access to a page'})
+            else:
+                return render(request, 'a.html',{'success': 'access a page success!'})
+
+    def post(self,request):
+        pass
+
+
+
+class B(View):
+
+    def get(self, request):
+        #verify login or not?
+        if authenticate(request.user):
+            return render(request, 'place_login.html')
+        else:
+            #get specify user  (add look_b_page permission for user Administrator)
+            user = User.objects.get(username='Administrator')
+            #create group and get group
+            Group.objects.get_or_create(name='b_page_test')
+            group = Group.objects.get(name='b_page_test')
+            #get content_type_id from db:django_content_type ->bpage ->id=15
+            permissions = Permission.objects.filter(content_type_id=15)
+            #add content_type_id=8 to group
+            for per in permissions:
+                group.permissions.add(per)
+
+            #add user to group
+            user.groups.add(group)
+
+            #verify whether user has custom permission
+            b_permission = Permission.objects.filter(codename='look_b_page').first()
+            #quanxian qu chong
+            users = User.objects.filter(Q(groups__permissions=b_permission) | Q(user_permissions=b_permission)).distinct()
+
+            #judge whether user have access to page b
+            if request.user not in users:
+                return HttpResponse('you have no access to page b')
+            else:
+                return render(request, 'b.html')
+    def post(self,request):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

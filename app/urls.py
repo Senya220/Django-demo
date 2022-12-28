@@ -3,7 +3,7 @@ from django.contrib import admin
 from app import views
 #class Message
 from .views import Messgae,Index,Para,Calcu,Jinja,MessageTest,UserInfo,Regiser
-from .views import Register,Login,Logout,Index
+from .views import Register,Login,Logout,Index,A,B
 
 urlpatterns = [
     # #http:localhost:8000
@@ -37,6 +37,7 @@ urlpatterns = [
     path('', Register.as_view(), name='register'),
     path('login/', Login.as_view(), name='login'),
     path('logout/', Logout.as_view(), name='logout'),
-    path('index/', Index.as_view(),name='index'),
-
+    path('index/', Index.as_view(), name='index'),
+    path('a/',A.as_view(), name="a_page"),
+    path('b/', B.as_view(), name="b_page"),
 ]

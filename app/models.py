@@ -92,18 +92,33 @@ class userIn(models.Model):
             'update_time': str(rs.update_time)
         }
 
-
-
 class Auth(models.Model):
     username = models.CharField(max_length=18,verbose_name='用户名')
     password = models.CharField(max_length=18,verbose_name='密码')
 
+class Apage(models.Model):
+    title = models.CharField(max_length=10)
+
+    def __str__(self):
+        return 'title:{}'.format(self.title)
+
+    class Meta:
+        permissions = [
+            #权限标识:look_a_page  权限管理说明
+            ('look_a_page', "can get this page message")
+        ]
 
 
+class Bpage(models.Model):
+    title = models.CharField(max_length=10)
 
+    def __str__(self):
+        return 'title:{}'.format(self.title)
 
-
-
+    class Meta:
+        permissions = [
+            ('look_b_page', "can't get this page message")
+        ]
 
 
 
